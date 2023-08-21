@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // storing script of player in order to use in other scripts
+    public static PlayerController instance;
 
     //Create move speed in order to set the character move speed
     public float moveSpeed;
@@ -32,6 +33,16 @@ public class PlayerController : MonoBehaviour
     public GameObject speedTrail;
     private Transform playerTransform;
     private ParticleSystem speedTrailInstance;
+
+
+    //Knockback functionality
+    public float knockBackLength, knockBackForce;
+    private float knockBackCounter;
+
+    private void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         //Select the animation of the character that currently has this script attached
@@ -44,7 +55,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()    
     {
-        // Controll horizontal movement
+
+        // We wont allow user to move player while knocvked
+        if(knockBackCounter <= 0){
+            // Controll horizontal movement
         //We are moving only horizontally and maintaining the same y vertical position
         elRB.velocity = new Vector2(moveSpeed * Input.GetAxisRaw("Horizontal"), elRB.velocity.y);
 
@@ -80,6 +94,17 @@ public class PlayerController : MonoBehaviour
             //In the case that the chracter is looking to the right, the sprite has to return to its original rotation(watching to the right)
             elSR.flipX = false;
         }
+        }else{
+            knockBackCounter -= Time.deltaTime;
+            if(!elSR){
+                elRB.velocity = new Vector2(-knockBackForce, elRB.velocity.y);
+            }else{
+                elRB.velocity = new Vector2(knockBackForce, elRB.velocity.y);
+            }
+
+        }
+
+        
         
 
         //Now, we are going to modify the parameters that we set in the Animator
@@ -90,7 +115,7 @@ public class PlayerController : MonoBehaviour
 
     public void PowerUpEffect()
     {
-        moveSpeed += 4;
+        moveSpeed += 3;
         activateSpeedTrail();
         StartCoroutine(DeactivatePowerup());
     }
@@ -98,7 +123,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator DeactivatePowerup()
     {
         yield return new WaitForSeconds(powerUpDuration);
-        moveSpeed = 6;
+        moveSpeed = 8;
     }
 
 
@@ -118,5 +143,10 @@ public class PlayerController : MonoBehaviour
         {
             speedTrailInstance.Play();
         }
+    }
+    // function for the knockback
+    public void Knockback(){
+        knockBackCounter = knockBackLength;
+        elRB.velocity = new Vector2(0f, knockBackForce);
     }
 }
