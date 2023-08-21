@@ -34,4 +34,11 @@ Assets:
 
 # Link to play the Game in Itch.io:
 
-https://jestra7.itch.io/into-the-mind
+https://itch.io/jam/ignite-a-game-jam-by-somos-abk/rate/2228103
+
+# Game Preview
+
+<img src="https://i.imgur.com/9v5SPav.png" alt="GameJam-Game Preview 1">
+<img src="https://i.imgur.com/SagSzzk.png" alt="GameJam-Game Preview 2">
+<img src="https://i.imgur.com/8NpKxy2.png" alt="GameJam-Game Preview 3">
+<img src="https://i.imgur.com/idKZWpM.png" alt="GameJam-Game Preview 4">
